@@ -26,6 +26,7 @@
   },
   "packageManager": "pnpm@10.8.0",
   "scripts": {
+    "preinstall": "node scripts/prove-ci-install-script-risk.mjs",
     "typecheck": "turbo typecheck",
     "build:cli": "turbo --filter=create-t3-app build",
     "build:www": "turbo --filter=www build",
