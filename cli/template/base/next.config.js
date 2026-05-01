@@ -4,28 +4,10 @@
  */
 import "./src/env.js";
 
-const isDev = process.env.NODE_ENV !== "production";
-
-const cspHeader = [
-  "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' blob: data: https:",
-  "font-src 'self'",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "frame-ancestors 'none'",
-  `connect-src 'self' https:${isDev ? " http: ws: wss:" : ""}`,
-  isDev ? "" : "upgrade-insecure-requests",
-]
-  .filter(Boolean)
-  .join("; ");
-
 const securityHeaders = [
   {
-    key: "Content-Security-Policy",
-    value: cspHeader,
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
   },
   {
     key: "Referrer-Policy",
