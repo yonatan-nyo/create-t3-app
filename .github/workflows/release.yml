@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   release:
     if: ${{ github.repository_owner == 't3-oss' }}

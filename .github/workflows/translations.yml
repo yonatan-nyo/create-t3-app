@@ -9,6 +9,11 @@ on:
       - "www/src/pages/**"
       - "!www/src/pages/en/**"
 
+permissions:
+  contents: read
+  pull-requests: read
+  issues: write
+
 jobs:
   notify-codeowners:
     if: |

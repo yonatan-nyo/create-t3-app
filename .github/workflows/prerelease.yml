@@ -8,6 +8,9 @@ on:
     types: [labeled]
     branches:
       - main
+
+permissions:
+  contents: read
 jobs:
   prerelease:
     if: |
