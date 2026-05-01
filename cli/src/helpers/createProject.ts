@@ -16,6 +16,22 @@ import {
 } from "~/installers/index.js";
 import { getUserPkgManager } from "~/utils/getUserPkgManager.js";
 
+const resolveProjectDir = (projectName: string) => {
+  const cwd = path.resolve(process.cwd());
+  const projectDir = path.resolve(cwd, projectName);
+  const relativeProjectDir = path.relative(cwd, projectDir);
+
+  if (
+    relativeProjectDir === ".." ||
+    relativeProjectDir.startsWith(`..${path.sep}`) ||
+    path.isAbsolute(relativeProjectDir)
+  ) {
+    throw new Error("Project directory must stay inside the current directory");
+  }
+
+  return projectDir;
+};
+
 interface CreateProjectOptions {
   projectName: string;
   packages: PkgInstallerMap;
@@ -35,7 +51,7 @@ export const createProject = async ({
   databaseProvider,
 }: CreateProjectOptions) => {
   const pkgManager = getUserPkgManager();
-  const projectDir = path.resolve(process.cwd(), projectName);
+  const projectDir = resolveProjectDir(projectName);
 
   // Bootstraps the base Next.js application
   await scaffoldProject({

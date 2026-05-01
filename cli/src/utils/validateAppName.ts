@@ -1,11 +1,35 @@
+import path from "path";
+
 import { removeTrailingSlash } from "./removeTrailingSlash.js";
 
 const validationRegExp =
   /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/;
+const pathTraversalRegExp = /(^|[\\/])\.\.($|[\\/])/;
+const currentDirectorySegmentRegExp = /(^|[\\/])\.($|[\\/])/;
 
 //Validate a string against allowed package.json names
 export const validateAppName = (rawInput: string) => {
   const input = removeTrailingSlash(rawInput);
+
+  if (!input) {
+    return "App name cannot be empty";
+  }
+
+  if (
+    input !== "." &&
+    (path.isAbsolute(input) || path.win32.isAbsolute(input))
+  ) {
+    return "Project directory must be a relative path inside the current directory";
+  }
+
+  if (pathTraversalRegExp.test(input)) {
+    return "Project directory cannot contain '..' path traversal segments";
+  }
+
+  if (input !== "." && currentDirectorySegmentRegExp.test(input)) {
+    return "Project directory cannot contain '.' path segments";
+  }
+
   const paths = input.split("/");
 
   // If the first part is a @, it's a scoped package

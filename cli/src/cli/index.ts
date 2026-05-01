@@ -195,6 +195,13 @@ export const runCli = async (): Promise<CliResults> => {
   // Needs to be separated outside the if statement to correctly infer the type as string | undefined
   const cliProvidedName = program.args[0];
   if (cliProvidedName) {
+    const validationError = validateAppName(cliProvidedName);
+
+    if (validationError) {
+      logger.error(validationError);
+      process.exit(1);
+    }
+
     cliResults.appName = cliProvidedName;
   }
 
