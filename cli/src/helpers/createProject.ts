@@ -15,8 +15,14 @@ import {
   type PkgInstallerMap,
 } from "~/installers/index.js";
 import { getUserPkgManager } from "~/utils/getUserPkgManager.js";
+import { validateAppName } from "~/utils/validateAppName.js";
 
 const resolveProjectDir = (projectName: string) => {
+  const validationError = validateAppName(projectName);
+  if (validationError) {
+    throw new Error(validationError);
+  }
+
   const cwd = path.resolve(process.cwd());
   const projectDir = path.resolve(cwd, projectName);
   const relativeProjectDir = path.relative(cwd, projectDir);
